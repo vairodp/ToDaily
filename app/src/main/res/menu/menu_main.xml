@@ -1,0 +1,64 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="example.app.progetto_am.MainActivity">
+
+    <item android:id="@+id/common_menu_settings"
+        android:icon="@drawable/ic_notifications_black_24dp"
+        android:title="Notifications"
+        app:showAsAction="always" >
+
+        <menu>
+
+            <item
+                android:id="@+id/action_activate_all_notifications"
+                android:orderInCategory="100"
+                android:title="All priorities"
+                app:showAsAction="never" />
+            <item
+                android:id="@+id/action_activate_only_yellow_and_red_notifications"
+                android:orderInCategory="100"
+                android:title="Only yellow and red"
+                app:showAsAction="never" />
+            <item
+                android:id="@+id/action_activate_only_red_notifications"
+                android:orderInCategory="100"
+                android:title="Only red notifications"
+                app:showAsAction="never" />
+            <item
+                android:id="@+id/action_activate_no_notifications"
+                android:orderInCategory="100"
+                android:title="No notifications"
+                app:showAsAction="never" />
+
+        </menu>
+
+
+    </item>
+
+    <item
+        android:id="@+id/action_filter_ASC"
+        android:orderInCategory="100"
+        android:title="Not Imporant to Very Important"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_filter_DESC"
+        android:orderInCategory="100"
+        android:title="Very Important to Not Important"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_filter_GREEN"
+        android:orderInCategory="100"
+        android:title="Only Not Import"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_filter_YELLOW"
+        android:orderInCategory="100"
+        android:title="Only Mildly Important"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_filter_RED"
+        android:orderInCategory="100"
+        android:title="Only Very Important"
+        app:showAsAction="never" />
+</menu>

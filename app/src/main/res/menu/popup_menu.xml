@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/item_work"
+        android:title="Work"/>
+    <item android:id="@+id/item_social"
+        android:title="Social"/>
+    <item android:id="@+id/item_health"
+        android:title="Health"/>
+    <item android:id="@+id/item_chores"
+        android:title="Chores"/>
+    <item android:id="@+id/item_shopping"
+        android:title="Shopping"/>
+
+</menu>
