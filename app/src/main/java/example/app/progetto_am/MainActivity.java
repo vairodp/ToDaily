@@ -18,17 +18,19 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.ItemTouchHelper;
-import android.util.Log;
+
+import android.text.InputType;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.PopupMenu;
 import android.widget.SeekBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.app.AlertDialog;
 import android.widget.Toast;
@@ -38,7 +40,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener, DatePickerDialog.OnDateSetListener {
+
+public class MainActivity extends AppCompatActivity implements  DatePickerDialog.OnDateSetListener {
 
     private ItemViewModel itemViewModel;
 
@@ -50,13 +53,11 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
 
     private boolean isFABOpen = false;
 
-    private ArrayList<Item> lista;
-
-    private Button showMenu;
     private String timePicked;
 
-    private SharedPreferences assoluto;
-    private SharedPreferences.Editor editore;
+    private Spinner addCategory;
+
+
     private int totalTaskCount,totalDoneCount;
 
 
@@ -83,27 +84,21 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
             }
         });
 
-        fab = findViewById(R.id.fab);
-        fab1=findViewById(R.id.fab1);
-        fab2=findViewById(R.id.fab2);
-
-        createList();
-        //clearAllNumbers();
+        fab  = findViewById(R.id.fab);
+        fab1 = findViewById(R.id.fab1);
+        fab2 = findViewById(R.id.fab2);
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!isFABOpen){
-                    showFABMenu();
-                }else{
-                    closeFABMenu();
-                }
+
+                if(!isFABOpen) { showFABMenu(); }
+                else { closeFABMenu(); }
             }
 
         });
 
-
-        //BUTTON ADD
+        //Add button
         fab1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -111,7 +106,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
             }
         });
 
-        //OPEN PIECHART
+        //Pie chart button
         fab2.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -130,8 +125,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
             }
         });
 
-
-
+        //Swipe to delete handler
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
                 ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
@@ -162,123 +156,132 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         c.set(Calendar.MONTH,month);
         c.set(Calendar.DAY_OF_MONTH,day);
 
-        String currentDateString = DateFormat.getDateInstance(DateFormat.FULL).format(c.getTime());
-
-        timePicked = currentDateString;
+        timePicked = DateFormat.getDateInstance(DateFormat.FULL).format(c.getTime());
 
     }
 
-    public boolean insertItem(String name, String category, int priority,int id)
+    public boolean insertItem(String name, String category, int priority, String date, int id)
     {
-        Item item;
+        //Get drawable from category
+        int drawable = 0;
 
         switch (category)
         {
             case "Work":
-                item = new Item(R.drawable.category_work,name,timePicked,priority);
-                if (id == -1) {
-                    itemViewModel.insert(item);
-                    Toast.makeText(MainActivity.this, "Task added", Toast.LENGTH_SHORT).show();
-                    return true;
-                }
-                item.setId(id);
-                itemViewModel.update(item);
-                Toast.makeText(MainActivity.this, "Task updated", Toast.LENGTH_SHORT).show();
-                return true;
+                drawable = R.drawable.category_work;
+                break;
             case "Social":
-                item = new Item(R.drawable.category_people,name, timePicked,priority);
-                if (id == -1) {
-                    itemViewModel.insert(item);
-                    Toast.makeText(MainActivity.this, "Task added", Toast.LENGTH_SHORT).show();
-                    return true;
-                }
-                item.setId(id);
-                itemViewModel.update(item);
-                Toast.makeText(MainActivity.this, "Task updated", Toast.LENGTH_SHORT).show();
-                return true;
+                drawable = R.drawable.category_people;
+                break;
             case "Health":
-                item = new Item(R.drawable.ic_fitness_center_black_24dp,name, timePicked,priority);
-                if (id == -1) {
-                    itemViewModel.insert(item);
-                    Toast.makeText(MainActivity.this, "Task added", Toast.LENGTH_SHORT).show();
-                    return true;
-                }
-                item.setId(id);
-                itemViewModel.update(item);
-                Toast.makeText(MainActivity.this, "Task updated", Toast.LENGTH_SHORT).show();
-                return true;
+                drawable = R.drawable.ic_fitness_center_black_24dp;
+                break;
             case "Chores":
-                item = new Item(R.drawable.category_chores,name, timePicked,priority);
-                if (id == -1) {
-                    itemViewModel.insert(item);
-                    Toast.makeText(MainActivity.this, "Task added", Toast.LENGTH_SHORT).show();
-                    return true;
-                }
-                item.setId(id);
-                itemViewModel.update(item);
-                Toast.makeText(MainActivity.this, "Task updated", Toast.LENGTH_SHORT).show();
-                return true;
+                drawable = R.drawable.category_chores;
+                break;
             case "Shopping":
-                item = new Item(R.drawable.category_shopping,name, timePicked,priority);
-                if (id == -1) {
-                    itemViewModel.insert(item);
-                    Toast.makeText(MainActivity.this, "Task added", Toast.LENGTH_SHORT).show();
-                    return true;
-                }
-                item.setId(id);
-                itemViewModel.update(item);
-                Toast.makeText(MainActivity.this, "Task updated", Toast.LENGTH_SHORT).show();
-                return true;
+                drawable = R.drawable.category_shopping;
+                break;
+            default:
+                drawable = R.drawable.ic_whatshot_black_24dp;
         }
 
+        Item item = new Item(drawable,name,date,priority);
+
+        if (id == -1)
+        {
+            itemViewModel.insert(item);
+            return true;
+        }
+
+        item.setId(id);
+        itemViewModel.update(item);
         return false;
     }
 
     public void AddOrEditItem(final int mode,final Item item)
     {
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View layout = inflater.inflate(R.layout.dialog_design,null);
+        final View layout = inflater.inflate(R.layout.dialog_design,null);
 
+        //Task name
         final EditText mEdit = layout.findViewById(R.id.taskname);
+        //Seek bar priority
         final SeekBar sb = layout.findViewById(R.id.seekbarvera);
+        //Text priority displayed
         final TextView testoPriority = layout.findViewById(R.id.textImportanza);
-        final Button showMenuPass = layout.findViewById(R.id.buttonShowMenu);
+        //Text Edit/Add
         final TextView testoJob = layout.findViewById(R.id.taskJob);
+        //Add new Category Button
+        final Button add = layout.findViewById(R.id.buttonAddCategory);
+        //Spinner categories
+        addCategory = layout.findViewById(R.id.spinner_categories);
 
-        showMenu = showMenuPass;
+        spinnerAdapter();
+
         sb.setMax(2);
 
+        //Edit mode layout
         if (mode == 2)
         {
             testoJob.setText("Edit Task");
             mEdit.setText(item.getTitolo());
             sb.setProgress(item.getPriority()-2);
-            testoPriority.setText(""+(item.getPriority()+1));
+            testoPriority.setText(""+0);
         }
 
+        //Add category button handler
+        add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addPersonalizedCategory();
+            }
+        });
+
+        //Confirm button handler
         AlertDialog.Builder builder = new AlertDialog.Builder(this)
                 .setView(layout)
                 .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
 
-                        int priority = sb.getProgress();
-                        priority = priority+1;
-
+                        //Get variables
+                        int priority = (sb.getProgress()) + 1;
+                        String category = addCategory.getSelectedItem().toString();
                         String name = mEdit.getText().toString();
-                        String category = showMenu.getText().toString();
+                        String date = timePicked;
 
-
-                        if (mode != 2)
+                        //Check if name is inserted
+                        if (TextUtils.isEmpty(mEdit.getText()))
                         {
-                            //aggiungo normale
-                            addTaskNumber();
-                            insertItem(name,category,priority,-1);
+                            Toast.makeText(MainActivity.this,"Task name required!", Toast.LENGTH_SHORT).show();
+                            return;
                         }
 
-                        else {
-                            //aggiungo edito
-                            insertItem(name, category, priority,item.getId());
+                        //TODO check if date is picked
+                        else if (false)
+                        {
+                            Toast.makeText(MainActivity.this, "Date required!", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+
+                        //All set, we can go
+                        else
+                        {
+                            //Normal mode
+                            if (mode != 2)
+                            {
+                                addTaskNumber();
+                                insertItem(name,category,priority,date,-1);
+                                Toast.makeText(MainActivity.this, "Task added!", Toast.LENGTH_SHORT).show();
+                            }
+
+                            //Edit mode
+                            else
+                            {
+                                insertItem(name,category,priority,date,item.getId());
+                                Toast.makeText(MainActivity.this, "Task edited!", Toast.LENGTH_SHORT).show();
+                            }
                         }
                     }
                 });
@@ -286,6 +289,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
 
+        //Listener seek bar movement
         sb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
@@ -304,18 +308,32 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         });
     }
 
-    public void createList()
+    public void addPersonalizedCategory()
     {
-        lista = new ArrayList<>();
-    }
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Insert new category name");
 
+        final EditText input = new EditText(this);
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
+        builder.setView(input);
 
-    public void showPopup (View view)
-    {
-        PopupMenu popup = new PopupMenu(this, view);
-        popup.setOnMenuItemClickListener(this);
-        popup.inflate(R.menu.popup_menu);
-        popup.show();
+        builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                addCategory(input.getText().toString());
+
+                Toast.makeText(MainActivity.this, "New category added", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+
+        builder.show();
     }
 
     public void showCalendar (View view)
@@ -324,47 +342,16 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         datePicker.show(getSupportFragmentManager(),"date picker");
     }
 
-    @Override
-    public boolean onMenuItemClick(MenuItem menuItem)
+    private void showFABMenu()
     {
-        switch (menuItem.getItemId())
-        {
-            case R.id.item_work:
-                chosen("Work");
-                return true;
-            case R.id.item_social:
-                chosen("Social");
-                return true;
-            case R.id.item_health:
-                chosen("Health");
-                return true;
-            case R.id.item_chores:
-                chosen("Chores");
-                return true;
-            case R.id.item_shopping:
-                chosen("Shopping");
-                return true;
-        }
-
-        return false;
-    }
-
-    public void chosen(String category)
-    {
-        showMenu.setText(category);
-        showMenu.setCompoundDrawablesWithIntrinsicBounds(R.drawable.category_vector_on,0,0,0);
-
-    }
-
-
-    private void showFABMenu(){
-        isFABOpen=true;
+        isFABOpen = true;
         fab1.animate().translationY(-getResources().getDimension(R.dimen.standard_55));
         fab2.animate().translationY(-getResources().getDimension(R.dimen.standard_105));
     }
 
-    private void closeFABMenu(){
-        isFABOpen=false;
+    private void closeFABMenu()
+    {
+        isFABOpen = false;
         fab1.animate().translationY(0);
         fab2.animate().translationY(0);
     }
@@ -538,7 +525,6 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
 
         editor.putInt("counterTotal",totalTaskCount);
         editor.apply();
-
     }
 
     public void addDoneNumber()
@@ -551,6 +537,63 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
 
         editor.putInt("counterDone",totalDoneCount);
         editor.apply();
+    }
+
+    public void addCategory(String name)
+    {
+        List<String> list = retrieveCategoriesList();
+        list.add(name);
+
+        StringBuilder csvList = new StringBuilder();
+        for (String s : list)
+        {
+            csvList.append(s);
+            csvList.append(",");
+        }
+
+        SharedPreferences prefs = getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+
+        editor.putString("CategoryList",csvList.toString());
+        editor.apply();
+
+        spinnerAdapter();
+    }
+
+    public List<String> retrieveCategoriesList()
+    {
+        SharedPreferences prefs = getPreferences(Context.MODE_PRIVATE);
+
+        String csvList = prefs.getString("CategoryList",",");
+        String[] items = csvList.split(",");
+
+        List<String> list = new ArrayList<>();
+
+        for(int i = 0; i < items.length; i++)
+        {
+            list.add(items[i]);
+        }
+
+        return list;
+    }
+
+    public void spinnerAdapter()
+    {
+        List<String> list = retrieveCategoriesList();
+
+        list.add("Work");
+        list.add("Social");
+        list.add("Health");
+        list.add("Chores");
+        list.add("Shopping");
+
+        ArrayAdapter<String> categoryAdapter = new ArrayAdapter<>(this,R.layout.support_simple_spinner_dropdown_item,list);
+        categoryAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+
+        categoryAdapter.notifyDataSetChanged();
+        addCategory.setAdapter(categoryAdapter);
+        categoryAdapter.notifyDataSetChanged();
+
     }
 
 }

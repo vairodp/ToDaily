@@ -29,14 +29,17 @@
         android:layout_marginBottom="4dp"
         android:hint="Enter task" />
 
+    <Spinner
+        android:id="@+id/spinner_categories"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
     <Button
-        android:id="@+id/buttonShowMenu"
+        android:id="@+id/buttonAddCategory"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Categoria"
-        android:onClick="showPopup"
-        android:drawableLeft="@drawable/category_vector_off"/>
+        android:text="+"
+        android:layout_weight="1" />
 
     <Button
         android:id="@+id/buttonPickDate"
