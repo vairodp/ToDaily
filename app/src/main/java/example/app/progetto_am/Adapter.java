@@ -23,15 +23,12 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder>
 
     public class ViewHolder extends RecyclerView.ViewHolder
     {
-
         private ImageView Immagine;
         private TextView Titolo;
         private TextView Sottotitolo;
         private FrameLayout Priority;
 
         private ImageButton Edit;
-
-
 
         public ViewHolder(@NonNull View itemView) {
 
@@ -110,7 +107,6 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder>
     {
         return items.get(position);
     }
-
 
     @Override
     public int getItemCount() {

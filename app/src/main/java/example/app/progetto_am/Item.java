@@ -30,8 +30,6 @@ public class Item {
         return id;
     }
 
-
-
     public int getImmagine()
     {
         return Immagine;

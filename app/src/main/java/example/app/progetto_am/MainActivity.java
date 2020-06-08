@@ -18,7 +18,6 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.ItemTouchHelper;
-
 import android.text.InputType;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -45,9 +44,8 @@ public class MainActivity extends AppCompatActivity implements  DatePickerDialog
 
     private ItemViewModel itemViewModel;
 
-    private FloatingActionButton fab;
-    private FloatingActionButton fab1;
-    private FloatingActionButton fab2;
+    FloatingActionButton fab;
+    private FloatingActionButton fab1,fab2;
 
     final  Adapter Adapter = new Adapter();
 
@@ -57,8 +55,7 @@ public class MainActivity extends AppCompatActivity implements  DatePickerDialog
 
     private Spinner addCategory;
 
-
-    private int totalTaskCount,totalDoneCount;
+    int totalTaskCount,totalDoneCount;
 
 
 
@@ -183,6 +180,7 @@ public class MainActivity extends AppCompatActivity implements  DatePickerDialog
                 drawable = R.drawable.category_shopping;
                 break;
             default:
+                //TODO change icon
                 drawable = R.drawable.ic_whatshot_black_24dp;
         }
 

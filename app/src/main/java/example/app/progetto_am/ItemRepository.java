@@ -4,9 +4,6 @@ import android.app.Application;
 import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
-import androidx.room.Dao;
-import androidx.room.Query;
-
 import java.util.List;
 
 public class ItemRepository {

@@ -58,6 +58,16 @@
             app:srcCompat="@drawable/ic_edit_black_24dp"
             android:layout_alignParentRight="true"/>
 
+        <TextView
+            android:id="@+id/Status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="25dp"
+            android:text="pending..."
+            android:textStyle="italic"
+            android:textSize="12sp"
+            android:layout_toLeftOf="@id/editButton"/>
+
     </RelativeLayout>
 
 </androidx.cardview.widget.CardView>
