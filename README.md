@@ -13,4 +13,19 @@ notifications which in turn can be customized according to the degree of priorit
 If it is hypothetically chosen to activate notifications only for medium-high activity
 priority, the user will then receive the reminder only for that type of job._
 
+## Screenshots
 
+<img align="right"  src="https://user-images.githubusercontent.com/65446134/135763134-7cbfef03-c5ba-489b-bd45-d44c453e9295.png" alt="logo-Corinne" length = 140 width = 140>
+
+
+<img align="right"  src="https://user-images.githubusercontent.com/65446134/135763159-7205b65c-f217-49e2-8a83-a9efe3b248bc.png" alt="logo-Corinne" length = 140 width = 140>
+
+
+<img align="right"  src="https://user-images.githubusercontent.com/65446134/135763181-cedc66ae-e7cd-404b-a0ff-4a4068e40b27.png" alt="logo-Corinne" length = 140 width = 140>
+
+
+<img align="right"  src="https://user-images.githubusercontent.com/65446134/135763193-470b64ec-9c17-47da-9a07-1a0348c1a244.png" alt="logo-Corinne" length = 140 width = 140>
+
+<img align="right"  src="https://user-images.githubusercontent.com/65446134/135763212-108e5425-2dce-400e-82d8-4e6019fcc072.png" alt="logo-Corinne" length = 140 width = 140>
+
+<img align="right"  src=https://user-images.githubusercontent.com/65446134/135763097-1a8f77e6-b758-40ea-93d6-53365054341b.png alt="logo-Corinne" length = 140 width = 140>
